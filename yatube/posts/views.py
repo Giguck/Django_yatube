@@ -5,15 +5,16 @@ from django.http import HttpResponse
 # posts/views.py
 # Главная страница
 def index(request):
-    return HttpResponse('Главная страница')
+    return render(request, 'posts/index.html')
 
 
-# Страница со списком мороженого
-def group_posts(request):
-    return HttpResponse('Список мороженого')
+def groups(request):
+    return render(request, 'posts/group.html')
 
 
-# Страница с информацией об одном сорте мороженого;
-# view-функция принимает параметр pk из path()
-def post(request, pk):
-    return HttpResponse(f'Мороженое номер {pk}')
+def group(request, slug):
+    return render(request, 'posts/group.html')
+
+
+def post(request, post_id):
+    return render(request, 'posts/post.html')
