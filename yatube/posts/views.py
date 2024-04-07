@@ -1,20 +1,39 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+# from django.http import HttpResponse
+from .models import Post, Group
 
 
 # posts/views.py
 # Главная страница
 def index(request):
-    return render(request, 'posts/index.html')
+    groups = Group.objects.all()
+    # В словаре context отправляем информацию в шаблон
+    context = {
+        'groups': groups,
+    }
+    return render(request, 'posts/index.html', context)
 
 
-def groups(request):
-    return render(request, 'posts/group.html')
+def posts(request):
+    posts = Post.objects.order_by('-pub_date')[:10]
+    # В словаре context отправляем информацию в шаблон
+    context = {
+        'posts': posts,
+    }
+    return render(request, 'posts/posts.html', context)
 
 
 def group(request, slug):
-    return render(request, 'posts/group.html')
+    posts = Post.objects.filter(group=Group.objects.get(slug=slug))
+    context = {
+        'posts': posts
+    }
+    return render(request, 'posts/group.html', context)
 
 
 def post(request, post_id):
-    return render(request, 'posts/post.html')
+    context = {
+        'title': "Тут можно посмотреть полный текст поста",
+        'post_id': post_id
+    }
+    return render(request, 'posts/post.html', context)
